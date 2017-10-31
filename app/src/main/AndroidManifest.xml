@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,11 +18,19 @@
         </activity>
         <activity android:name=".Detail">
             <intent-filter>
-                <action android:name="company.leon.gouwuche.Detail" />
+                <action android:name="company.leon.gouwuche.Detail" android:launchMode="singleInstance"/>
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <receiver
+            android:name=".Reciver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="company.leon.gouwuche.MyStaticFliter"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -17,10 +17,14 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.OvershootInLeftAnimator;
@@ -185,15 +189,43 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        //final String STATICACTION="company.leon.gouwuche.MyStaticFliter";
+        Random random=new Random();
+        Intent intentBroadcast=new Intent("company.leon.gouwuche.MyStaticFliter");
+        int i = random.nextInt(data.size());
+        intentBroadcast.putExtra("goods",data.get(i));
+        sendBroadcast(intentBroadcast);
 
+        EventBus.getDefault().register(this);
 
+    }
+    @Subscribe
+    public void onEventMainThread(goods g) {
+        mListView.setVisibility(View.VISIBLE);
+        mRcyclerView.setVisibility(View.INVISIBLE);
+        floatingActionButton.setImageResource(R.drawable.mainpage);
+        flag=false;
+        if(g.isCart()==true) {//更新购物车信息
+            Map<String, Object> tem = new LinkedHashMap<>();
+            tem.put("name", g.getName());
+            tem.put("initial", g.getInitials());
+            tem.put("price", g.getPrice());
+            tem.put("index", g.getId());
+            shopItems.add(tem);//添加到购物车
+            simpleAdapter.notifyDataSetChanged();
+        }
+        data.get(g.getId()).setStar(g.isStar());
+    }
+    @Subscribe
+    public void onEventMainThread(int tmp) {
+        if(tmp!=-2)
+        data.get(tmp).setStar(true);
     }
     //商品详情信息回传处理
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent intent){
         if(requestCode==1){
             if(resultCode==1){
-//                goods g=(goods)getIntent().getExtras().get("goods");
                 Bundle extras=intent.getExtras();
                 if(extras!=null){
                     goods g=(goods)extras.get("shop");
@@ -208,8 +240,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                     data.get(g.getId()).setStar(g.isStar());//更新商品是否收藏，其他信息都不会被修改，所以不用管
                 }
-            }
+           }
         }
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//反注册EventBus
     }
 
 }

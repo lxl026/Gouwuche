@@ -1,6 +1,7 @@
 package company.leon.gouwuche;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -27,6 +28,8 @@ public class Detail extends AppCompatActivity {
     ImageView cart;//购物车图标
     ListView bottom;//底部操作
     goods g;
+    Reciver dynamicReciver;
+//    final String DYNAMMICATION="DYNAMMICATION";
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +94,15 @@ public class Detail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 g.setCart(true);
-                Toast.makeText(getApplicationContext(),"商品已加到购物车",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"商品已加到购物车", Toast.LENGTH_SHORT).show();
+                dynamicReciver=new Reciver();
+                IntentFilter dynamicFliter= new IntentFilter();
+                dynamicFliter.addAction("company.leon.gouwuche.MyDynamicFliter");
+                registerReceiver(dynamicReciver,dynamicFliter);
+
+                Intent intentBroadcast=new Intent("company.leon.gouwuche.MyDynamicFliter");
+                intentBroadcast.putExtra("goods",g);
+                sendBroadcast(intentBroadcast);
 
             }
         });
@@ -100,13 +111,19 @@ public class Detail extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Detail.this,MainActivity.class);
+                //Intent intent=new Intent(Detail.this,MainActivity.class);
 //                Bundle bundle = new Bundle();
 //                bundle.putSerializable("goods", g);
-                intent.putExtra("shop", g);
-                setResult(1,intent);
+                //intent.putExtra("shop", g);
+                //setResult(1,intent);
                 finish();
             }
         });
+
     }
+//    @Override
+//    protected void onDestroy(){
+//        super.onDestroy();
+//        unregisterReceiver(dynamicReciver);
+ //   }
 }
