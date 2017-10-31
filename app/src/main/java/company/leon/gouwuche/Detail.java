@@ -12,6 +12,8 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,7 +31,6 @@ public class Detail extends AppCompatActivity {
     ListView bottom;//底部操作
     goods g;
     Reciver dynamicReciver;
-//    final String DYNAMMICATION="DYNAMMICATION";
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +50,7 @@ public class Detail extends AppCompatActivity {
 
         //得到商品列表或者购物车传递过来的商品信息
         g=(goods)getIntent().getExtras().get("goods");
-        g.setCart(false);//购物车设为假，不然会出bug
+        //g.setCart(false);//购物车设为假，不然会出bug
         if(g!=null)
         {
             goods_name.setText(g.getName());
@@ -85,6 +86,7 @@ public class Detail extends AppCompatActivity {
                     g.setStar(true);
                     star.setImageResource(R.drawable.full_star);
                 }
+                EventBus.getDefault().post(new EvenMsg(1,g.getId(),g.isStar()));
             }
         });
 
@@ -95,8 +97,10 @@ public class Detail extends AppCompatActivity {
             public void onClick(View v) {
                 g.setCart(true);
                 Toast.makeText(getApplicationContext(),"商品已加到购物车", Toast.LENGTH_SHORT).show();
+                EventBus.getDefault().post(new EvenMsg(2,g.getId(),g.isStar()));
                 dynamicReciver=new Reciver();
                 IntentFilter dynamicFliter= new IntentFilter();
+                EventBus.getDefault().post(g);
                 dynamicFliter.addAction("company.leon.gouwuche.MyDynamicFliter");
                 registerReceiver(dynamicReciver,dynamicFliter);
 
@@ -111,19 +115,21 @@ public class Detail extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent=new Intent(Detail.this,MainActivity.class);
+  //              Intent intent=new Intent(Detail.this,MainActivity.class);
 //                Bundle bundle = new Bundle();
 //                bundle.putSerializable("goods", g);
-                //intent.putExtra("shop", g);
-                //setResult(1,intent);
+ //               intent.putExtra("shop", g);
+  //              setResult(1,intent);
                 finish();
             }
         });
 
     }
+
+
 //    @Override
 //    protected void onDestroy(){
 //        super.onDestroy();
 //        unregisterReceiver(dynamicReciver);
- //   }
+//    }
 }

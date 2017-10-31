@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     CommonAdapter commonAdapter;
     List<Map<String,Object>> shopItems;         //存储购物车商品
     SimpleAdapter simpleAdapter;
+    goods g;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         //getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
+
 
         //商品内容
         String[] Name = new String[]{"Enchated Forest", "Aela Milk", "Devondale Milk", "Kindle Oasis",
@@ -189,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        //final String STATICACTION="company.leon.gouwuche.MyStaticFliter";
         Random random=new Random();
         Intent intentBroadcast=new Intent("company.leon.gouwuche.MyStaticFliter");
         int i = random.nextInt(data.size());
@@ -199,13 +200,21 @@ public class MainActivity extends AppCompatActivity {
         EventBus.getDefault().register(this);
 
     }
-    @Subscribe
-    public void onEventMainThread(goods g) {
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
         mListView.setVisibility(View.VISIBLE);
         mRcyclerView.setVisibility(View.INVISIBLE);
         floatingActionButton.setImageResource(R.drawable.mainpage);
         flag=false;
-        if(g.isCart()==true) {//更新购物车信息
+    }
+
+    @Subscribe
+    public void onEventMainThread(EvenMsg E) {
+        if(E.getMod()==2)
+        {
+            goods g=data.get(E.getGoodsId());
             Map<String, Object> tem = new LinkedHashMap<>();
             tem.put("name", g.getName());
             tem.put("initial", g.getInitials());
@@ -214,35 +223,34 @@ public class MainActivity extends AppCompatActivity {
             shopItems.add(tem);//添加到购物车
             simpleAdapter.notifyDataSetChanged();
         }
-        data.get(g.getId()).setStar(g.isStar());
-    }
-    @Subscribe
-    public void onEventMainThread(int tmp) {
-        if(tmp!=-2)
-        data.get(tmp).setStar(true);
-    }
-    //商品详情信息回传处理
-    @Override
-    protected void onActivityResult(int requestCode,int resultCode,Intent intent){
-        if(requestCode==1){
-            if(resultCode==1){
-                Bundle extras=intent.getExtras();
-                if(extras!=null){
-                    goods g=(goods)extras.get("shop");
-                    if(g.isCart()==true) {//更新购物车信息
-                        Map<String, Object> tem = new LinkedHashMap<>();
-                        tem.put("name", g.getName());
-                        tem.put("initial", g.getInitials());
-                        tem.put("price", g.getPrice());
-                        tem.put("index", g.getId());
-                        shopItems.add(tem);//添加到购物车
-                        simpleAdapter.notifyDataSetChanged();
-                    }
-                    data.get(g.getId()).setStar(g.isStar());//更新商品是否收藏，其他信息都不会被修改，所以不用管
-                }
-           }
+        else if(E.getMod()==1)
+        {
+            data.get(E.getGoodsId()).setStar(E.isStar());
         }
     }
+
+    //商品详情信息回传处理
+//    @Override
+//    protected void onActivityResult(int requestCode,int resultCode,Intent intent){
+//        if(requestCode==1){
+//            if(resultCode==1){
+//                Bundle extras=intent.getExtras();
+//                if(extras!=null){
+//                    goods g=(goods)extras.get("shop");
+//                    if(g.isCart()==true) {//更新购物车信息
+//                        Map<String, Object> tem = new LinkedHashMap<>();
+//                        tem.put("name", g.getName());
+//                        tem.put("initial", g.getInitials());
+//                        tem.put("price", g.getPrice());
+//                        tem.put("index", g.getId());
+//                        shopItems.add(tem);//添加到购物车
+//                        simpleAdapter.notifyDataSetChanged();
+//                    }
+//                    data.get(g.getId()).setStar(g.isStar());//更新商品是否收藏，其他信息都不会被修改，所以不用管
+//                }
+//           }
+//        }
+//    }
 
     @Override
     protected void onDestroy(){

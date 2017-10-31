@@ -8,8 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
-import org.greenrobot.eventbus.EventBus;
+import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 
 /**
  * Created by Leon on 2017/10/30.
@@ -28,7 +28,7 @@ public class Reciver extends BroadcastReceiver{
             //获取状态通知栏管理
             NotificationManager manager=(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             //实例化通知栏构造器
-            Notification.Builder builder=new Notification.Builder(context);
+            NotificationCompat.Builder builder=new NotificationCompat.Builder(context);
             //对builder进行配置
             builder.setContentTitle("新商品热卖")
                     .setContentText(gd.getName()+"仅售"+gd.getPrice()+"!")
@@ -43,10 +43,6 @@ public class Reciver extends BroadcastReceiver{
             builder.setContentIntent(mPendingIntent);
             Notification notify=builder.build();
             manager.notify(0,notify);
-            int tmp;
-            if(gd.isStar())tmp=gd.getId();
-            else  tmp=-2;
-            EventBus.getDefault().post(tmp);
         }
         else if(intent.getAction().equals(DYNAMIACTION)){
             goods gd=(goods) intent.getExtras().get("goods");
@@ -66,13 +62,13 @@ public class Reciver extends BroadcastReceiver{
                     .setAutoCancel(true);
             //绑定intent，点击图标时能够进入其activity
             Intent mIntent = new Intent(context,MainActivity.class);
-//            mIntent.putExtras(intent.getExtras());
+            Bundle bundle=new Bundle();
+            bundle.putSerializable("Even",gd);
+            mIntent.putExtras(bundle);
             PendingIntent mPendingIntent=PendingIntent.getActivity(context,0,mIntent,PendingIntent.FLAG_UPDATE_CURRENT);
             builder.setContentIntent(mPendingIntent);
             Notification notify=builder.build();
             manager.notify(0,notify);
-
-            EventBus.getDefault().post(gd);
         }
     }
 }
