@@ -6,7 +6,7 @@ package company.leon.gouwuche;
 
 public class EvenMsg {
     private int mod;//信息模式
-    //1 表示收藏修改 2表示添加到购物车 3表示跳转到购物界面
+    //1 表示收藏修改 2表示添加到购物车
     private int goodsId;//表示商品编号
     boolean star;//标记收藏
     public EvenMsg(int mod,int goodsId,boolean star){

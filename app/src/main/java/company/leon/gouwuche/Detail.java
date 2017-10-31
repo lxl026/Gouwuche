@@ -97,13 +97,16 @@ public class Detail extends AppCompatActivity {
             public void onClick(View v) {
                 g.setCart(true);
                 Toast.makeText(getApplicationContext(),"商品已加到购物车", Toast.LENGTH_SHORT).show();
+
+                //发生EvenBus信息
                 EventBus.getDefault().post(new EvenMsg(2,g.getId(),g.isStar()));
+                EventBus.getDefault().post(g);
+
+                //初始化、注册、发送动态广播
                 dynamicReciver=new Reciver();
                 IntentFilter dynamicFliter= new IntentFilter();
-                EventBus.getDefault().post(g);
                 dynamicFliter.addAction("company.leon.gouwuche.MyDynamicFliter");
                 registerReceiver(dynamicReciver,dynamicFliter);
-
                 Intent intentBroadcast=new Intent("company.leon.gouwuche.MyDynamicFliter");
                 intentBroadcast.putExtra("goods",g);
                 sendBroadcast(intentBroadcast);

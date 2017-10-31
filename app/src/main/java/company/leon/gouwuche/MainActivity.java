@@ -191,28 +191,35 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        Random random=new Random();
+        //静态广播部分
+        //定义Intent
         Intent intentBroadcast=new Intent("company.leon.gouwuche.MyStaticFliter");
-        int i = random.nextInt(data.size());
-        intentBroadcast.putExtra("goods",data.get(i));
+        //发送随机的一个商品
+        intentBroadcast.putExtra("goods",data.get(new Random().nextInt(data.size())));
+        //发送广播
         sendBroadcast(intentBroadcast);
 
+        //注册EvenBus
         EventBus.getDefault().register(this);
 
     }
 
+    //重写onNewIntent,将页面变成购物车
     @Override
     protected void onNewIntent(Intent intent)
     {
+        super.onNewIntent(intent);
         mListView.setVisibility(View.VISIBLE);
         mRcyclerView.setVisibility(View.INVISIBLE);
         floatingActionButton.setImageResource(R.drawable.mainpage);
         flag=false;
     }
 
+    //重写onEventMainThread，在主线程中执行信息更新
+    //EvenMsg是容纳信息的类，根据它可以知道修改的是购物车还是收藏
     @Subscribe
     public void onEventMainThread(EvenMsg E) {
-        if(E.getMod()==2)
+        if(E.getMod()==2)//添加购物车
         {
             goods g=data.get(E.getGoodsId());
             Map<String, Object> tem = new LinkedHashMap<>();
@@ -223,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
             shopItems.add(tem);//添加到购物车
             simpleAdapter.notifyDataSetChanged();
         }
-        else if(E.getMod()==1)
+        else if(E.getMod()==1)//修改收藏
         {
             data.get(E.getGoodsId()).setStar(E.isStar());
         }
@@ -255,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        EventBus.getDefault().unregister(this);//反注册EventBus
+        EventBus.getDefault().unregister(this);//注销EventBus
     }
 
 }
