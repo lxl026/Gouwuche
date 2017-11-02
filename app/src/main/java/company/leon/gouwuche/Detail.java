@@ -133,6 +133,6 @@ public class Detail extends AppCompatActivity {
 //    @Override
 //    protected void onDestroy(){
 //        super.onDestroy();
-//        unregisterReceiver(dynamicReciver);
+//        unregisterReceiver(dynamicReciver);//注销动态广播
 //    }
 }

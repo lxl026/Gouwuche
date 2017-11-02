@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" android:launchMode="singleInstance">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,18 +20,31 @@
         </activity>
         <activity android:name=".Detail">
             <intent-filter>
-                <action android:name="company.leon.gouwuche.Detail" android:launchMode="singleInstance"/>
+                <action
+                    android:name="company.leon.gouwuche.Detail"
+                    android:launchMode="singleInstance" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <receiver
             android:name=".Reciver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="company.leon.gouwuche.MyStaticFliter"></action>
+                <action android:name="company.leon.gouwuche.MyStaticFliter" />
             </intent-filter>
+        </receiver>
+        <receiver android:name=".mWidget">
+            <intent-filter>
+                <action android:name="company.leon.gouwuche.StaticActionWidget"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/m_widget_info" />
         </receiver>
     </application>
 

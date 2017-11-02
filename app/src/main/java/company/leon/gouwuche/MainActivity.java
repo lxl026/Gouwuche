@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         });
         //静态广播部分
         //定义Intent
-        Intent intentBroadcast=new Intent("company.leon.gouwuche.MyStaticFliter");
+        Intent intentBroadcast=new Intent("company.leon.gouwuche.StaticActionWidget");
         //发送随机的一个商品
         intentBroadcast.putExtra("goods",data.get(new Random().nextInt(data.size())));
         //发送广播
