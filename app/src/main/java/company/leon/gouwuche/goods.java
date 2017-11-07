@@ -66,4 +66,6 @@ public class goods implements Serializable {
     public void setStar(boolean star) {
         this.star = star;
     }
+
+
 }

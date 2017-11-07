@@ -18,11 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Detail">
+
+        <activity
+            android:name=".Detail"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action
-                    android:name="company.leon.gouwuche.Detail"
-                    android:launchMode="singleInstance" />
+                    android:name="company.leon.gouwuche.Detail" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

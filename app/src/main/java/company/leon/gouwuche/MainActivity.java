@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                     int position=Integer.parseInt(shopItems.get(i).get("index").toString());
                     bundle.putSerializable("goods",data.get(position));
                     intent1.putExtras(bundle);
-                    startActivityForResult(intent1,1);
+                    startActivity(intent1);
                 }
             }
         });
@@ -202,6 +202,17 @@ public class MainActivity extends AppCompatActivity {
         //注册EvenBus
         EventBus.getDefault().register(this);
 
+       // g=(goods)getIntent().getExtras().get("goods");
+//        if(g.isCart()==true) {//更新购物车信息
+//            Map<String, Object> t = new LinkedHashMap<>();
+//            tem.put("name", g.getName());
+//            tem.put("initial", g.getInitials());
+//            tem.put("price", g.getPrice());
+//            tem.put("index", g.getId());
+//            shopItems.add(t);//添加到购物车
+//            simpleAdapter.notifyDataSetChanged();
+//        }
+
     }
 
     //重写onNewIntent,将页面变成购物车
@@ -209,10 +220,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent)
     {
         super.onNewIntent(intent);
-        mListView.setVisibility(View.VISIBLE);
-        mRcyclerView.setVisibility(View.INVISIBLE);
-        floatingActionButton.setImageResource(R.drawable.mainpage);
-        flag=false;
+        if(intent.getExtras()!=null)
+        {
+            mListView.setVisibility(View.VISIBLE);
+            mRcyclerView.setVisibility(View.INVISIBLE);
+            floatingActionButton.setImageResource(R.drawable.mainpage);
+            flag=false;
+        }
+
+
     }
 
     //重写onEventMainThread，在主线程中执行信息更新
@@ -258,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
 //           }
 //        }
 //    }
+
 
     @Override
     protected void onDestroy(){

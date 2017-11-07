@@ -105,9 +105,9 @@ public class Detail extends AppCompatActivity {
                 //初始化、注册、发送动态广播
                 dynamicReciver=new Reciver();
                 IntentFilter dynamicFliter= new IntentFilter();
-                dynamicFliter.addAction("company.leon.gouwuche.MyDynamicFliter");
+                dynamicFliter.addAction("company.leon.gouwuche.DynamicActionWidget");
                 registerReceiver(dynamicReciver,dynamicFliter);
-                Intent intentBroadcast=new Intent("company.leon.gouwuche.MyDynamicFliter");
+                Intent intentBroadcast=new Intent("company.leon.gouwuche.DynamicActionWidget");
                 intentBroadcast.putExtra("goods",g);
                 sendBroadcast(intentBroadcast);
 
@@ -118,6 +118,11 @@ public class Detail extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent=new Intent(Detail.this,MainActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("goods", g);
+//                intent.putExtra("shop", g);
+                startActivity(intent);
   //              Intent intent=new Intent(Detail.this,MainActivity.class);
 //                Bundle bundle = new Bundle();
 //                bundle.putSerializable("goods", g);

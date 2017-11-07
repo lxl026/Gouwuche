@@ -31,6 +31,7 @@ public class mWidget extends AppWidgetProvider {
 //        for (int appWidgetId : appWidgetIds) {
 //            updateAppWidget(context, appWidgetManager, appWidgetId);
 //        }
+        super.onUpdate(context,appWidgetManager,appWidgetIds);
         RemoteViews updateView = new RemoteViews(context.getPackageName(),R.layout.m_widget);//实例化RemoteView
         Intent i = new Intent(context,MainActivity.class);
         PendingIntent pi =PendingIntent.getActivity(context,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -46,7 +47,7 @@ public class mWidget extends AppWidgetProvider {
         if(intent.getAction().equals("company.leon.gouwuche.StaticActionWidget")) {
             goods g=(goods) intent.getExtras().get("goods");
             RemoteViews updateViews = new RemoteViews(context.getPackageName(),R.layout.m_widget);//实例化RemoteView
-            Intent i = new Intent(context,MainActivity.class);
+            Intent i = new Intent(context,Detail.class);
             i.addCategory(Intent.CATEGORY_LAUNCHER);
 
             i.putExtras(intent.getExtras());
@@ -58,14 +59,21 @@ public class mWidget extends AppWidgetProvider {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             appWidgetManager.updateAppWidget(me,updateViews);
         }
-        else if(intent.getAction().equals("company.leon.gouwuche.DynamicActionWidget")) {
 
-        }
     }
 
     @Override
     public void onEnabled(Context context) {
         // Enter relevant functionality for when the first widget is created
+//        RemoteViews updateViews = new RemoteViews(context.getPackageName(),R.layout.m_widget);//实例化RemoteView
+//        Intent i = new Intent(context,MainActivity.class);
+//        i.addCategory(Intent.CATEGORY_LAUNCHER);
+//        PendingIntent pi = PendingIntent.getActivity(context,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
+//        updateViews.setTextViewText(R.id.appwidget_text,"当前没有任何信息");
+//        updateViews.setOnClickPendingIntent(R.id.widget,pi);
+//        ComponentName me = new ComponentName(context,mWidget.class);
+//        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+//        appWidgetManager.updateAppWidget(me,updateViews);
     }
 
     @Override
