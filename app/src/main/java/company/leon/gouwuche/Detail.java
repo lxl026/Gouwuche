@@ -118,6 +118,7 @@ public class Detail extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent=new Intent(Detail.this,MainActivity.class);
 //                Bundle bundle = new Bundle();
 //                bundle.putSerializable("goods", g);

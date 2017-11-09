@@ -38,6 +38,7 @@
                 <action android:name="company.leon.gouwuche.MyStaticFliter" />
             </intent-filter>
         </receiver>
+
         <receiver android:name=".mWidget">
             <intent-filter>
                 <action android:name="company.leon.gouwuche.StaticActionWidget"/>

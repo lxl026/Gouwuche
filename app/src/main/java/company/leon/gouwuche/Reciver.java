@@ -2,7 +2,7 @@ package company.leon.gouwuche;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
-import android.content.BroadcastReceiver;
+import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import android.widget.RemoteViews;
  * Created by Leon on 2017/10/30.
  */
 
-public class Reciver extends BroadcastReceiver{
+public class Reciver extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals("company.leon.gouwuche.DynamicActionWidget")) {
@@ -21,7 +21,6 @@ public class Reciver extends BroadcastReceiver{
             Intent i = new Intent(context,MainActivity.class);
             i.addCategory(Intent.CATEGORY_LAUNCHER);
             i.putExtras(intent.getExtras());
-
             PendingIntent pi = PendingIntent.getActivity(context,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
             updateViews.setTextViewText(R.id.appwidget_text,g.getName()+"已添加到购物车");
             updateViews.setImageViewResource(R.id.appwidget_image,g.getImageid());

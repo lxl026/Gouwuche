@@ -227,8 +227,6 @@ public class MainActivity extends AppCompatActivity {
             floatingActionButton.setImageResource(R.drawable.mainpage);
             flag=false;
         }
-
-
     }
 
     //重写onEventMainThread，在主线程中执行信息更新
